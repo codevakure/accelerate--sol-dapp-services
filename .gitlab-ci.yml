@@ -1,0 +1,6 @@
+include:
+  - project: 'hhs-accelerate/server.au-config'
+    file: '/AU-Docker-Build.yaml'
+  - project: 'hhs-accelerate/server.au-config'
+    file: '/AU-Docker-Deploy.yaml'
+

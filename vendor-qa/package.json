@@ -1,0 +1,79 @@
+{
+  "name": "vendor-qa",
+  "version": "1.0.0",
+  "description": "vendor-qa",
+  "keywords": [
+    "loopback-application",
+    "loopback"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "docker:build": "docker build -t vendor-qa .",
+    "docker:run": "docker run -p 6025:6025 -d vendor-qa",
+    "docker:remove": "docker stop vendor-qa && docker rm vendor-qa && docker rmi vendor-qa",
+    "docker:build:local": "cp ../local.env .; docker build -t vendor-qa --build-arg RUNENV=local .",
+    "docker:build:shared": "cp ../shared.env .; docker build -t vendor-qa --build-arg RUNENV=shared .",
+    "docker:build:dev": "cp ../dev.env .; docker build -t vendor-qa --build-arg RUNENV=dev .",
+    "migrate": "node ./dist/migrate",
+    "openapi-spec": "node ./dist/openapi-spec",
+    "prestart": "npm run build",
+    "start": "node -r source-map-support/register .",
+    "prepublishOnly": "npm run test"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "",
+  "license": "",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "dependencies": {
+    "@loopback/boot": "^2.3.3",
+    "@loopback/context": "^3.9.0",
+    "@loopback/core": "^2.8.0",
+    "@loopback/openapi-v3": "^3.4.3",
+    "@loopback/repository": "^2.7.0",
+    "@loopback/rest": "^5.1.1",
+    "@loopback/rest-explorer": "^2.2.4",
+    "@loopback/service-proxy": "^2.3.2",
+    "@types/dotenv": "^6.1.1",
+    "dotenv": "^8.2.0",
+    "loopback": "^3.27.0",
+    "loopback-connector-mongodb": "^5.2.3",
+    "loopback-connector-openapi": "^6.1.0",
+    "loopback-connector-rest": "^3.6.0",
+    "sonarqube-scanner": "^2.4.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^5.4.2",
+    "source-map-support": "^0.5.19",
+    "@loopback/testlab": "^3.1.6",
+    "@types/node": "^10.17.24",
+    "@loopback/eslint-config": "^8.0.0",
+    "eslint": "^7.1.0",
+    "typescript": "~3.9.3"
+  }
+}

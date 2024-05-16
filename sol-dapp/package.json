@@ -1,0 +1,83 @@
+{
+  "name": "sol-dapp",
+  "version": "1.0.0",
+  "description": "Solicitation Dapp",
+  "keywords": [
+    "loopback-application",
+    "loopback"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean dist *.tsbuildinfo",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "docker:build": "docker build -t sol-dapp .",
+    "docker:run": "docker run --name sol-dapp -t  -p 6021:6021 -d sol-dapp",
+    "docker:remove": "docker stop sol-dapp && docker rm sol-dapp && docker rmi sol-dapp",
+    "docker:build:local": "cp ../local.env .; docker build -t sol-dapp --build-arg RUNENV=local .",
+    "docker:build:shared": "cp ../shared.env .; docker build -t sol-dapp --build-arg RUNENV=shared .",
+    "docker:build:dev": "cp ../dev.env .; docker build -t sol-dapp --build-arg RUNENV=dev .",
+    "migrate": "node ./dist/migrate",
+    "openapi-spec": "node ./dist/openapi-spec",
+    "prestart": "npm run build",
+    "start": "node .",
+    "prepublishOnly": "npm run test"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "",
+  "license": "",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "dependencies": {
+    "@loopback/boot": "^2.3.3",
+    "@loopback/cli": "^2.10.0",
+    "@loopback/context": "^3.9.0",
+    "@loopback/core": "^2.8.0",
+    "@loopback/openapi-v3": "^3.4.3",
+    "@loopback/repository": "^2.7.0",
+    "@loopback/rest": "^5.1.1",
+    "@loopback/rest-explorer": "^2.2.4",
+    "@loopback/service-proxy": "^2.3.2",
+    "@types/dotenv": "^6.1.1",
+    "dotenv": "^8.2.0",
+    "loopback": "^3.27.0",
+    "loopback-connector-mongodb": "^5.2.3",
+    "loopback-connector-openapi": "^6.1.0",
+    "loopback-connector-rest": "^3.6.0",
+    "tslib": "^2.0.0",
+    "randomstring": "^1.1.5"
+  },
+  "devDependencies": {
+    "@loopback/build": "^5.4.3",
+    "@loopback/eslint-config": "^8.0.1",
+    "@loopback/testlab": "^3.1.7",
+    "@types/node": "^10.17.26",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-eslint-plugin": "^2.2.1",
+    "eslint-plugin-mocha": "^7.0.0",
+    "typescript": "~3.9.5"
+  }
+}
